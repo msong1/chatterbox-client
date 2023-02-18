@@ -19,8 +19,8 @@ var FormView = {
 
     let message = {
       username: App.username,
-      text: 'We ArE HeRe', //,
-      roomname: null//
+      text: $('#sendMessage').val(), //,
+      roomname: RoomsView.$select.val()//
     };
     Parse.create(message);
 

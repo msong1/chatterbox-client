@@ -84,7 +84,10 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    color: rgb(23, 23, 23);
+    font-size: 20px;
+    background-color: #eee;
+    font-weight: 800;
 }
+
 

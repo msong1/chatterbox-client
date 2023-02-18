@@ -15,19 +15,14 @@ var App = {
 
 
 
-    FormView.initialize();
-    RoomsView.initialize();
-    MessagesView.initialize();
 
     // Fetch initial batch of messages
     App.startSpinner();
-    App.fetch(App.stopSpinner);
+    App.fetch(App.stopSpinner); // we get all the data
 
     // TODO: Make sure the app loads data from the API
     // continually, instead of just once at the start.
-    // initialize the database
 
-    // store fetched
 
 
 
@@ -36,25 +31,44 @@ var App = {
   fetch: function(callback = ()=>{}) {
     Parse.readAll((data) => {
       // examine the response from the server request:
-      console.log(data);
-
+      console.log('data: ', data);
+      console.log(1);
       // TODO: Use the data to update Messages and Rooms
       // and re-render the corresponding views.
-      if (this._rawData[0] && (data[0].message_id === this._rawData[0].message_id)) {
-        return;
-      }
+
+      // if (this._rawData[0] && (data[0].message_id === this._rawData[0].message_id)) {
+      //   callback(); //=========
+      //   setTimeout(() => {
+      //     App.initialize();
+      //   }, 5000);
+      //   return;
+      // }
+      console.log(2);
 
       // if the data are different, update the database
       this._rawData = data;
-      Rooms._data = Array.from(new Set(App._rawData.map(obj => {
-        if (obj.roomname !== null) {
-          return obj.roomname; // HTML encode before storing it
-        }
-      }))); //
-      Friends._data = [];
+      console.log(3);
+
+      // initialize the database
+      Rooms._data = App.getVal(App._rawData, 'roomname'); //
+      console.log(4);
+
       Messages._data = [];
+      console.log(5);
+
+      FormView.initialize();
+      console.log(6);
+      RoomsView.initialize(); // specify the initial room to be, or show all the messages something like 'lobby'
+      console.log(7);
+      MessagesView.initialize();
+      console.log(8);
 
       callback(); //=========
+      // console.log('reloaded');
+      // setTimeout(() => {
+      //   $('#chats').empty();
+      //   App.initialize();
+      // }, 5000);
     });
   },
 
@@ -66,5 +80,13 @@ var App = {
   stopSpinner: function() {
     App.$spinner.fadeOut('fast');
     FormView.setStatus(false);
+  },
+
+  getVal: function(arr, key) {
+    return _.uniq(_.pluck(arr, key));
   }
+
+
+
+
 };
